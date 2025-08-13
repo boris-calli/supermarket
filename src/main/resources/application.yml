@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: demo # Nombre de la aplicación (aparece en logs y en Actuator si lo usas)
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/supermarket?useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update # Opciones: none, validate, update, create, create-drop
+    show-sql: true # Muestra las queries en consola (útil en desarrollo)
+    properties:
+      hibernate:
+        format_sql: true # Formatea las queries para que sean más legibles
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+server:
+  port: 8080 # Puerto donde correrá la aplicación
