@@ -41,5 +41,5 @@ public class ProductSubCategoryEntity {
     @ManyToOne
     @JoinColumn(name = "category_product_id", nullable = false)
     @JsonBackReference
-    private ProductCategoryEntity categoryProduct;
+    private ProductCategoryEntity productCategory;
 }

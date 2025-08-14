@@ -3,6 +3,9 @@ package com.supermarket.demo.model.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -38,18 +41,16 @@ public class UserEntity {
     @Column(name = "lastname", length = 20, nullable = false)
     private String lastName;
 
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     @Column(name = "status", nullable = false)
     private Boolean status;
-
-    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<InvoiceEntity> invoices;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference

@@ -52,7 +52,6 @@ public class PurchaseOrderEntity {
 
     @ManyToOne
     @JoinColumn(name = "supplier_id", nullable = false)
-    @JsonBackReference
     private SupplierEntity supplier;
 
     @OneToMany(mappedBy = "purchaseOrder", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)

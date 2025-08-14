@@ -50,7 +50,5 @@ public class SupplierEntity {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<PurchaseOrderDetailEntity> purchaseOrderDetails;
+    
 }

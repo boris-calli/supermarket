@@ -56,12 +56,10 @@ public class InvoiceEntity {
 
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
-    @JsonBackReference
     private ClientEntity client;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
     private UserEntity user;
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

@@ -1,8 +1,12 @@
 package com.supermarket.demo.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.supermarket.demo.dto.UserDto;
+import com.supermarket.demo.exception.UniqueUsernameException;
+import com.supermarket.demo.exception.ValueNotFoundException;
 import com.supermarket.demo.model.entity.UserEntity;
 import com.supermarket.demo.model.repository.UserRepository;
 
@@ -19,17 +23,72 @@ public class UserImplementService implements UserInterfaceService {
 
     @Override
     @Transactional
-    public UserEntity registerUser(UserDto userDTO) {
-        userRepository.findByUsername(userDTO.getUsername()).ifPresent(user -> { throw new IllegalArgumentException("El username ya existe"); });
+    public UserEntity registerUser(UserDto userDto) {
+        String username = userDto.getUsername().toUpperCase().trim();
+
+        userRepository
+        .findByUsername(username)
+        .ifPresent(user -> {
+            String message = String.format("El username %s ya existe", username);
+            throw new UniqueUsernameException(message);
+        }); 
 
         UserEntity userEntity = new UserEntity();
-        userEntity.setName(userDTO.getName());
-        userEntity.setLastName(userDTO.getLastName());
-        userEntity.setUsername(userDTO.getUsername());
-        userEntity.setPassword(userDTO.getPassword());
-        userEntity.setStatus(true);
+
+        String password = userDto.getPassword();
+        String name = userDto.getName();
+        String lastName = userDto.getLastName();
+        
+        userEntity.setUsername(username);
+        userEntity.setPassword(password);
+        userEntity.setName(name);
+        userEntity.setLastName(lastName);
+        userEntity.setStatus(Boolean.TRUE);
+        
 
         return userRepository.save(userEntity);
     }
-    
+
+    @Override
+    @Transactional
+    public List<UserEntity> fetchUserList() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public UserEntity updateUser(Long id, UserDto userDto) {
+        UserEntity userEntity = userRepository
+        .findById(id)
+        .orElseThrow(() -> new ValueNotFoundException("User Not Found in Database"));
+        String username = userDto.getUsername();
+        String password = userDto.getPassword();
+        String name = userDto.getName();
+        String lastName = userDto.getLastName();
+        
+        userEntity.setUsername(username);
+        userEntity.setPassword(password);
+        userEntity.setName(name);
+        userEntity.setLastName(lastName);
+
+        return userRepository.save(userEntity);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(Long id) {
+        UserEntity userEntity = userRepository
+        .findById(id)
+        .orElseThrow(() -> new ValueNotFoundException("User Not Found in Database"));
+        userRepository.delete(userEntity);
+    }
+
+    @Override
+    @Transactional
+    public UserEntity fetchUser(Long id) {
+        UserEntity userEntity = userRepository
+        .findById(id)
+        .orElseThrow(() -> new ValueNotFoundException("User Not Found in Database"));
+        return userEntity;
+    }
 }

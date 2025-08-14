@@ -9,9 +9,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDto {
+    @NotNull
     @NotBlank(message = "Provide a username")
     private String username;
 
+    @NotNull
     @NotBlank(message = "Password is mandatory")
     @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
