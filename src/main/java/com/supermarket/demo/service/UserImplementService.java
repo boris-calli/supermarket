@@ -2,6 +2,7 @@ package com.supermarket.demo.service;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.supermarket.demo.dto.UserDto;
@@ -30,7 +31,7 @@ public class UserImplementService implements UserInterfaceService {
         .findByUsername(username)
         .ifPresent(user -> {
             String message = String.format("El username %s ya existe", username);
-            throw new UniqueUsernameException(message);
+            throw new UniqueUsernameException(message, HttpStatus.BAD_REQUEST);
         }); 
 
         UserEntity userEntity = new UserEntity();
@@ -50,7 +51,6 @@ public class UserImplementService implements UserInterfaceService {
     }
 
     @Override
-    @Transactional
     public List<UserEntity> fetchUserList() {
         return userRepository.findAll();
     }
@@ -75,7 +75,6 @@ public class UserImplementService implements UserInterfaceService {
     }
 
     @Override
-    @Transactional
     public void deleteUser(Long id) {
         UserEntity userEntity = userRepository
         .findById(id)
@@ -84,7 +83,6 @@ public class UserImplementService implements UserInterfaceService {
     }
 
     @Override
-    @Transactional
     public UserEntity fetchUser(Long id) {
         UserEntity userEntity = userRepository
         .findById(id)

@@ -1,5 +1,9 @@
 package com.supermarket.demo.dto;
 
+import java.time.LocalDateTime;
+
+import org.springframework.http.HttpStatus;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -8,11 +12,7 @@ import lombok.Data;
 @Data
 @Builder
 public class ErrorDto {
-    @NotNull
-    @NotBlank
-    private String code;
-
-    @NotNull
-    @NotBlank
+    private HttpStatus code;
     private String message;
+    private LocalDateTime time;
 }
