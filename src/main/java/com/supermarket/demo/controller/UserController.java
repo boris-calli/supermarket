@@ -13,11 +13,16 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -37,7 +42,7 @@ public class UserController {
         return userInterfaceService.registerUser(userDto);
     }
 
-    @GetMapping("/users")
+    @GetMapping("/users/all")
     public List<UserEntity> fetchUserList() {
         return userInterfaceService.fetchUserList();
     }
@@ -46,6 +51,16 @@ public class UserController {
     public UserEntity fetchUser(@PathVariable Long id) {
         return userInterfaceService.fetchUser(id);
     }
+
+    @GetMapping("/users/page")
+    public Page<UserEntity> fetchUserPage(
+        @RequestParam("page") int page,
+        @RequestParam("size") int size
+        ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userInterfaceService.fetchUserPage(pageable);
+    }
+    
 
     @PutMapping("/users/{id}")
     public UserEntity updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {

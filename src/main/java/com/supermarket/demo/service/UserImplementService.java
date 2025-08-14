@@ -2,6 +2,8 @@ package com.supermarket.demo.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,6 @@ public class UserImplementService implements UserInterfaceService {
     }
 
     @Override
-    @Transactional
     public UserEntity registerUser(UserDto userDto) {
         String username = userDto.getUsername().toUpperCase().trim();
 
@@ -88,5 +89,10 @@ public class UserImplementService implements UserInterfaceService {
         .findById(id)
         .orElseThrow(() -> new ValueNotFoundException("User Not Found in Database"));
         return userEntity;
+    }
+
+    @Override
+    public Page<UserEntity> fetchUserPage(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 }
