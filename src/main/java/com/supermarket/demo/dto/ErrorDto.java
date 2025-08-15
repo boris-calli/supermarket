@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
