@@ -8,8 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.supermarket.demo.dto.UserDto;
-import com.supermarket.demo.exception.UniqueUsernameException;
-import com.supermarket.demo.exception.ValueNotFoundException;
+import com.supermarket.demo.exception.ResourceExistsException;
 import com.supermarket.demo.model.entity.UserEntity;
 import com.supermarket.demo.model.repository.UserRepository;
 
@@ -32,7 +31,7 @@ public class UserImplementService implements UserInterfaceService {
         .findByUsername(username)
         .ifPresent(user -> {
             String message = String.format("El username %s ya existe", username);
-            throw new UniqueUsernameException(message, HttpStatus.BAD_REQUEST);
+            throw new ResourceExistsException(message, HttpStatus.CONFLICT);
         }); 
 
         UserEntity userEntity = new UserEntity();
@@ -61,7 +60,10 @@ public class UserImplementService implements UserInterfaceService {
     public UserEntity updateUser(Long id, UserDto userDto) {
         UserEntity userEntity = userRepository
         .findById(id)
-        .orElseThrow(() -> new ValueNotFoundException("User Not Found in Database"));
+        .orElseThrow(() -> {
+            String message = "User Not Found in Database";
+            return new ResourceExistsException(message, HttpStatus.BAD_REQUEST);
+        });
         String username = userDto.getUsername();
         String password = userDto.getPassword();
         String name = userDto.getName();
@@ -79,7 +81,10 @@ public class UserImplementService implements UserInterfaceService {
     public void deleteUser(Long id) {
         UserEntity userEntity = userRepository
         .findById(id)
-        .orElseThrow(() -> new ValueNotFoundException("User Not Found in Database"));
+        .orElseThrow(() -> {
+            String message = "User Not Found in Database";
+            return new ResourceExistsException(message, HttpStatus.BAD_REQUEST);
+        });
         userRepository.delete(userEntity);
     }
 
@@ -87,7 +92,10 @@ public class UserImplementService implements UserInterfaceService {
     public UserEntity fetchUser(Long id) {
         UserEntity userEntity = userRepository
         .findById(id)
-        .orElseThrow(() -> new ValueNotFoundException("User Not Found in Database"));
+        .orElseThrow(() -> {
+            String message = "User Not Found in Database";
+            return new ResourceExistsException(message, HttpStatus.BAD_REQUEST);
+        });
         return userEntity;
     }
 
