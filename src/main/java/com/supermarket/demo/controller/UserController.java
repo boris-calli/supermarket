@@ -97,7 +97,7 @@ public class UserController {
         @ApiResponse(responseCode = "400", description = "Resource not found")
     })
     @PutMapping("/users/{id}")
-    public UserEntity updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+    public UserEntity updateUser(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
         return userInterfaceService.updateUser(id, userDto);
     }
 
