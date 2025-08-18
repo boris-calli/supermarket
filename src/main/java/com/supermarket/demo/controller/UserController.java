@@ -76,8 +76,8 @@ public class UserController {
     })
     @GetMapping("/users/page")
     public Page<UserEntity> fetchUserPage(
-        @RequestParam("page") int page,
-        @RequestParam("size") int size,
+        @RequestParam(value = "page", defaultValue = "0") int page,
+        @RequestParam(value = "size", defaultValue = "10") int size,
         @RequestParam(value = "sort", required = false, defaultValue = "id") String sort,
         @RequestParam(value = "direction", required = false, defaultValue = "ASC") String direction
         ) {
