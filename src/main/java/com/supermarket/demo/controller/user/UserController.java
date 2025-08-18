@@ -1,4 +1,4 @@
-package com.supermarket.demo.controller;
+package com.supermarket.demo.controller.user;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.supermarket.demo.dto.UserDto;
 import com.supermarket.demo.model.entity.UserEntity;
 import com.supermarket.demo.service.UserInterfaceService;
+import com.supermarket.demo.controller.Constants;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -32,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(Constants.user.PATH)
 public class UserController {
     
     private final UserInterfaceService userInterfaceService;

@@ -2,6 +2,7 @@ package com.supermarket.demo.exception;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.mapping.PropertyReferenceException;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.supermarket.demo.dto.ErrorDto;
+import com.supermarket.demo.dto.ErrorMethodNotValidDto;
 
 @ControllerAdvice
 public class AppException {
@@ -49,21 +51,19 @@ public class AppException {
     //     "lastName": "Pereira"
     // }
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String,Object>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        Map<String,Object> error = new HashMap<>();        
-        HttpStatus status = HttpStatus.resolve(ex.getStatusCode().value());
+    public ResponseEntity<List<ErrorMethodNotValidDto>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {     
+        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
 
-        Map<String,String> fieldErrors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(fieldError -> {
-            String field = fieldError.getField();
-            String fieldMessage = fieldError.getDefaultMessage();
-            fieldErrors.put(field, fieldMessage);
-        });
-        error.put("error", status.toString());
-        error.put("fields", fieldErrors);
-        error.put("time", LocalDateTime.now().toString());
+        List<ErrorMethodNotValidDto> fieldErrors = 
+        ex.getFieldErrors().stream().map(fieldError -> {
+            return ErrorMethodNotValidDto.builder()
+            .code(fieldError.getCode())
+            .message(fieldError.getDefaultMessage())
+            .fields(fieldError.getField())
+            .build();
+        }).toList();
 
-        return ResponseEntity.status(status).body(error);
+        return ResponseEntity.status(status).body(fieldErrors);
     }
 
     // @ExceptionHandler(MethodArgumentNotValidException.class)
